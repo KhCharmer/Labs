@@ -5,10 +5,4 @@
 
 using Point = std::pair<double, double>;
 
-
-class VisibilityGraph
-{
-
-};
-
 #endif // MODEL_H

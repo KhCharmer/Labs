@@ -7,11 +7,18 @@
 
 class VisibilityGraph
 {
-std::vector<std::pair<Point, Point>> edges;
+private:
+    std::vector<std::pair<Point, Point>> edges;
+    std::vector<std::pair<Point, int>> all_points;
+    std::vector<std::pair<Point, Point>> poly_edges;
+
+    void addPoly(const Polygon &);
+
 public:
     VisibilityGraph(std::vector<Polygon>);
     std::vector<std::pair<Point, Point>> getEdges();
     void PrintEdges();
+    std::vector<std::pair<Point, Point>> addPoint(Point, int);
 };
 
 #endif // VISIBILITYGRAPH_H

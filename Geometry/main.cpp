@@ -1,22 +1,11 @@
-#include <iostream>
-#include <polygon.h>
-#include <field.h>
-#include <visibilitygraph.h>
-#include <exception>
-using namespace std;
+#include "plotwindow.h"
+#include <QApplication>
 
-int main()
+int main(int argc, char *argv[])
 {
-    vector<Point> points;
-    points.push_back({0,0});
-    points.push_back({0,1});
-    points.push_back({1,1});
-    points.push_back({1,0});
-    cout << ValidPolygon(points);
-    Polygon p(points);
-    Field field;
-    field.AddPoly(p);
-    VisibilityGraph vg(field.GetInnerPolygons());
-    vg.PrintEdges();
-    return 0;
+    QApplication a(argc, argv);
+    PlotWindow w;
+    w.show();
+
+    return a.exec();
 }
