@@ -3,6 +3,8 @@
 #include "Geometry/visibilitygraph.h"
 #include "Geometry/shortestpath.h"
 
+VisibilityGraph Controller::vg;
+
 Polygon Controller::uiPolyToModel(const QVector<std::pair<double, double>> &uiPoly)
 {
     std::vector<Point> points;
@@ -32,16 +34,16 @@ QVector<std::pair<Ui::Point, Ui::Point>>
     {
          model.push_back(uiPolyToModel(polygon));
     }
-    VisibilityGraph vg(model);
+    Controller::vg = VisibilityGraph(model);
     // transforming Model data back to View representation
-    std::vector<std::pair<Point, Point>> vgEdges = vg.getEdges();
+    std::vector<std::pair<Point, Point>> vgEdges = Controller::vg.getEdges();
     return modelEdgeToUi(vgEdges);
 }
 
 QVector<std::pair<Ui::Point, Ui::Point>>
     Controller::calcShortestPath(QVector<QVector<std::pair<double, double>>> &polygons
-                                 , QVector<std::pair<Ui::Point, Ui::Point>> &vg
-                                 , Ui::Point start, Ui::Point finish)
+                                 , Ui::Point start, Ui::Point finish
+                                 , QVector<std::pair<Ui::Point, Ui::Point>> &additionalVg)
 {
     // transforming data input from View to Model representation
     std::vector<std::pair<Point, Point>> model;
@@ -51,8 +53,16 @@ QVector<std::pair<Ui::Point, Ui::Point>>
         model.insert(model.end(), edges.begin(), edges.end());
     }
     // TODO: workaround, fix it!
-    auto vec = vg.toStdVector();
+    VisibilityGraph temp = vg;
+
+    auto newVgEdges = QVector<std::pair<Ui::Point, Ui::Point>>::fromStdVector(temp.addPoint(start, -1));
+    additionalVg += newVgEdges;
+    newVgEdges = QVector<std::pair<Ui::Point, Ui::Point>>::fromStdVector(temp.addPoint(finish, -1));
+    additionalVg += newVgEdges;
+
+    auto vec = temp.getEdges();
     model.insert(model.end(), vec.begin(), vec.end());
-    return QVector<std::pair<Ui::Point, Ui::Point>>
-        ::fromStdVector(shortestPath(model, start, finish));
+    auto path = shortestPath(model, start, finish);
+    vg = temp;
+    return QVector<std::pair<Ui::Point, Ui::Point>>::fromStdVector(path);
 }

@@ -11,6 +11,9 @@ void VisibilityGraph::addPoly(const Polygon &poly)
     poly_edges.push_back({temp_points[n - 1], temp_points[0]});
 }
 
+VisibilityGraph::VisibilityGraph()
+{}
+
 VisibilityGraph::VisibilityGraph(std::vector<Polygon> polys)
 {
     for (int i = 0; i < polys.size(); i++)
@@ -20,7 +23,6 @@ VisibilityGraph::VisibilityGraph(std::vector<Polygon> polys)
         for (int j = 0; j < points.size(); ++j)
         {
             std::vector<std::pair<Point, Point>> newEdges = addPoint(points[j], i);
-            edges.insert(edges.end(), newEdges.begin(), newEdges.end());
         }
     }
 }
@@ -34,10 +36,9 @@ std::vector<std::pair<Point, Point>> VisibilityGraph::getEdges()
 std::vector<std::pair<Point, Point>> VisibilityGraph::addPoint(Point p, int id=-1)
 {
     std::vector<std::pair<Point, Point>> newEdges;
-    all_points.push_back({p, id});
     for (int i = 0; i < all_points.size(); i++)
     {
-        if (all_points[i].second == id) continue;
+        if (all_points[i].second == id && id != -1) continue;
         bool crossed = false;
         for (int k = 0; k < poly_edges.size(); k++)
             if (LinesCross(all_points[i].first, p, poly_edges[k].first, poly_edges[k].second))
@@ -48,6 +49,8 @@ std::vector<std::pair<Point, Point>> VisibilityGraph::addPoint(Point p, int id=-
         if (!crossed)
             newEdges.push_back({all_points[i].first, p});
     }
+    all_points.push_back({p, id});
+    edges.insert(edges.end(), newEdges.begin(), newEdges.end());
     return newEdges;
 }
 

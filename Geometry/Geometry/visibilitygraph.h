@@ -15,6 +15,7 @@ private:
     void addPoly(const Polygon &);
 
 public:
+    VisibilityGraph();
     VisibilityGraph(std::vector<Polygon>);
     std::vector<std::pair<Point, Point>> getEdges();
     void PrintEdges();

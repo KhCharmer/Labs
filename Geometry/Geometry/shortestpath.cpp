@@ -51,7 +51,7 @@ std::vector<std::pair<Point, Point>>
     int n = g.size();
     int s = pointId[start];
     int f = pointId[finish];
-    std::vector<int> d (n, INFINITY),  p (n);
+    std::vector<double> d (n, INFINITY),  p (n);
     d[s] = 0;
     p[s] = s;
     std::priority_queue<std::pair<double, int>> q;

@@ -125,13 +125,21 @@ void PlotWindow::on_plotInput_clicked(QMouseEvent *event)
         this->finish = p;
         query->addData(x, y);
         this->ui->inputQuery->setEnabled(true);
-        this->path = Controller::calcShortestPath(this->polygons, this->vg
-            , this->start, this->finish);
+        QVector<std::pair<Ui::Point, Ui::Point>> additionalVg;
+        this->path = Controller::calcShortestPath(this->polygons, this->start, this->finish, additionalVg);
+
+        for (const auto &edge: additionalVg)
+        {
+            Ui::Point p1 = edge.first, p2 = edge.second;
+            this->addLine(p1.first, p1.second, p2.first, p2.second, "visibility graph", false, Qt::blue);
+        }
+
         for (const auto &edge: this->path)
         {
             Ui::Point p1 = edge.first, p2 = edge.second;
             this->addLine(p1.first, p1.second, p2.first, p2.second, "shortest path", true, Qt::green);
         }
+        this->ui->plot->replot();
         this->mode = Mode::None;
     }
 
@@ -213,5 +221,5 @@ void PlotWindow::on_inputFreeze_clicked()
 
 void PlotWindow::on_inputQuery_clicked()
 {
-
+    this->mode = Mode::Start;
 }

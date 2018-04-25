@@ -3,6 +3,7 @@
 
 #include <QVector>
 #include "Geometry/polygon.h"
+#include "Geometry/visibilitygraph.h"
 
 namespace Ui
 {
@@ -11,6 +12,7 @@ namespace Ui
 
 class Controller {
 private:
+    static VisibilityGraph vg;
     static Polygon
         uiPolyToModel(const QVector<std::pair<double, double>> &uiPoly);
     static QVector<std::pair<Ui::Point, Ui::Point>>
@@ -20,7 +22,7 @@ public:
         calcVisibilityGraph(QVector<QVector<std::pair<double, double>>> &polygons);
     static QVector<std::pair<Ui::Point, Ui::Point>>
         calcShortestPath(QVector<QVector<std::pair<double, double>>> &polygons
-                                 , QVector<std::pair<Ui::Point, Ui::Point>> &vg
-                                 , Ui::Point start, Ui::Point finish);
+                         , Ui::Point start, Ui::Point finish
+                         , QVector<std::pair<Ui::Point, Ui::Point>> &additionalsVg);
 };
 #endif // CONTROLLER_H
