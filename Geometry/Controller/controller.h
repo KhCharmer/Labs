@@ -24,5 +24,6 @@ public:
         calcShortestPath(QVector<QVector<std::pair<double, double>>> &polygons
                          , Ui::Point start, Ui::Point finish
                          , QVector<std::pair<Ui::Point, Ui::Point>> &additionalsVg);
+    static QVector<QVector<Ui::Point>> getRandomField();
 };
 #endif // CONTROLLER_H

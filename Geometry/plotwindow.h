@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "qcustomplot/qcustomplot.h"
 #include <map>
+#include <iostream>
 
 namespace Ui {
 class PlotWindow;
@@ -32,6 +33,8 @@ private slots:
     void on_inputFreeze_clicked();
 
     void on_inputQuery_clicked();
+
+    void on_inputRandom_clicked();
 
 private:
     std::pair<double, double> start, finish;

@@ -85,3 +85,61 @@ std::vector<std::pair<Point, Point>> Polygon::GetEdges() const
 {
     return edges;
 }
+
+Polygon CreateValid(std::vector<Point> points)
+{
+    while (!ValidPolygon(points))
+    {
+        std::random_shuffle(points.begin(), points.end());
+    }
+    return Polygon(points);
+}
+
+double EuclideanDist(Point a, Point b)
+{
+    return sqrt((a.first - b.first) * (a.first - b.first) +
+                (a.second - b.second) * (a.second - b.second));
+}
+
+bool EuclideanDistOk(std::vector<Point> & points, Point new_point, double req_dist)
+{
+    for (auto point : points)
+    {
+        if (EuclideanDist(point, new_point) < req_dist)
+            return false;
+    }
+    return true;
+}
+
+Polygon Polygon::GenerateRandom(int v_n, double min_x, double max_x, double min_y, double max_y)
+{
+    std::set<Point> set_points;
+    std::vector<Point> points;
+    std::random_device seed;
+    std::mt19937 rnd(seed());
+    std::uniform_real_distribution<> x_d(min_x, max_x);
+    std::uniform_real_distribution<> y_d(min_y, max_y);
+    for (int i = 0; i < v_n; i++)
+    {
+        double x = x_d(rnd);
+        double y = y_d(rnd);
+        if (set_points.find({x, y}) == set_points.end() && EuclideanDistOk(points, {x, y}, 0.2))
+        {
+            points.push_back({x, y});
+            set_points.insert({x, y});
+        }
+        else
+        {
+            while (set_points.find({x, y}) != set_points.end() || !EuclideanDistOk(points, {x, y}, 0.2))
+            {
+                x = x_d(rnd);
+                y = y_d(rnd);
+            }
+            points.push_back({x, y});
+            set_points.insert({x, y});
+        }
+    }
+    return CreateValid(points);
+}
+
+

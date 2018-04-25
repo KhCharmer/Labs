@@ -223,3 +223,19 @@ void PlotWindow::on_inputQuery_clicked()
 {
     this->mode = Mode::Start;
 }
+
+void PlotWindow::on_inputRandom_clicked()
+{
+    auto temp_polygons = Controller::getRandomField();
+    std::cerr << "! "<< temp_polygons.size() << " ! ";
+    for (int i = 0; i < temp_polygons[0].size(); i++)
+    {
+        std::cerr << "x: " << temp_polygons[0][i].first << " y: " << temp_polygons[0][i].second << std::endl;
+    }
+    for (QVector<std::pair<double, double>> poly : temp_polygons)
+    {
+        this->addPolygon(poly);
+        this->polygons.push_back(poly);
+    }
+    ui->plot->replot();
+}

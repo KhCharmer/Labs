@@ -1,5 +1,6 @@
 #include "controller.h"
 #include "Geometry/polygon.h"
+#include "Geometry/field.h"
 #include "Geometry/visibilitygraph.h"
 #include "Geometry/shortestpath.h"
 
@@ -65,4 +66,17 @@ QVector<std::pair<Ui::Point, Ui::Point>>
     auto path = shortestPath(model, start, finish);
     vg = temp;
     return QVector<std::pair<Ui::Point, Ui::Point>>::fromStdVector(path);
+}
+
+QVector<QVector<std::pair<double, double>>>
+    Controller::getRandomField()
+{
+    QVector<QVector<Ui::Point>> result;
+    Field field = Field::GenerateRandom();
+    std::vector<Polygon> polys = field.GetInnerPolygons();
+    for (int i = 0; i < polys.size(); i++)
+    {
+        result.push_back(QVector<Ui::Point>::fromStdVector(polys[i].GetPoints()));
+    }
+    return result;
 }

@@ -12,6 +12,7 @@ public:
     Field();
     bool AddPoly(Polygon);
     void AddPolyRand();
+    static Field GenerateRandom();
     bool SetOuterPoly(Polygon);
     void SetOuterPolyRand();
     std::vector<Polygon> GetInnerPolygons();
