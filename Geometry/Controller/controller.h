@@ -25,5 +25,6 @@ public:
                          , Ui::Point start, Ui::Point finish
                          , QVector<std::pair<Ui::Point, Ui::Point>> &additionalsVg);
     static QVector<QVector<Ui::Point>> getRandomField(int polyNumber);
+    static bool PolygonIsOkay(QVector<std::pair<double, double>> new_polygon , QVector<QVector<std::pair<double, double>>> & other_polygons);
 };
 #endif // CONTROLLER_H

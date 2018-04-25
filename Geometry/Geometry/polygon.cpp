@@ -73,6 +73,16 @@ Polygon::Polygon(std::vector<Point> ps)
 
 Position Polygon::CheckPosition(Polygon & with)
 {
+    int number1 = points.size(), number2 = with.points.size();
+    for (int i = 0; i < number1; i++)
+    {
+        for (int j = 0; j < number2; j++)
+        {
+            Point st1 = points[i], st2 = with.points[j], f1 = points[(i + 1) % number1], f2 = with.points[(j + 1) % number2];
+            if (LinesCross(st1, f1, st2, f2))
+                return Crossing;
+        }
+    }
     return NonIntersecting;
 }
 
@@ -140,6 +150,14 @@ Polygon Polygon::GenerateRandom(int v_n, double min_x, double max_x, double min_
         }
     }
     return CreateValid(points);
+}
+
+bool Polygon::IsPossibleToAdd(Polygon poly, std::vector<Polygon> & to)
+{
+    for (auto with : to)
+        if(poly.CheckPosition(with) == Crossing)
+            return false;
+    return true;
 }
 
 

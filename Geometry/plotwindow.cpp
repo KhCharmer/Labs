@@ -167,7 +167,7 @@ void PlotWindow::on_inputBegin_clicked()
 
 void PlotWindow::on_inputEnd_clicked()
 {
-    if (this->mode == Mode::Input)
+    if (this->mode == Mode::Input && Controller::PolygonIsOkay(this->buffer, this->polygons))
     {
         this->polygons.push_back(this->buffer);
         this->addPolygon(this->buffer);
@@ -177,6 +177,10 @@ void PlotWindow::on_inputEnd_clicked()
         this->mode = Mode::None;
         ui->infoLabel->setText("");
         ui->plot->replot();
+    }
+    else if (!Controller::PolygonIsOkay(this->buffer, this->polygons))
+    {
+        ui->infoLabel->setText("New polygon invalid (cross existed).");
     }
 }
 

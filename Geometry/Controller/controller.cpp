@@ -80,3 +80,15 @@ QVector<QVector<std::pair<double, double>>>
     }
     return result;
 }
+
+bool Controller::PolygonIsOkay(QVector<std::pair<double, double>> new_polygon ,QVector<QVector<std::pair<double, double>>> & other_polygons)
+{
+    Polygon polygon(new_polygon.toStdVector());
+    std::vector<Polygon> polygons;
+    for (auto p : other_polygons)
+    {
+        Polygon temp(p.toStdVector());
+        polygons.push_back(temp);
+    }
+    return Polygon::IsPossibleToAdd(polygon, polygons);
+}

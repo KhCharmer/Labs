@@ -28,6 +28,7 @@ public:
     std::vector<Point> GetPoints() const;
     std::vector<std::pair<Point, Point>> GetEdges() const;
     static Polygon GenerateRandom(int v_n, double min_x, double max_x, double min_y, double max_y);
+    static bool IsPossibleToAdd(Polygon poly, std::vector<Polygon> & to);
 };
 
 #endif // POLYGON_H
