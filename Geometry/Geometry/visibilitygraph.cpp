@@ -20,6 +20,9 @@ VisibilityGraph::VisibilityGraph(std::vector<Polygon> polys)
     for (int i = 0; i < polys.size(); i++)
     {
         addPoly(polys[i]);
+    }
+    for (int i = 0; i < polys.size(); i++)
+    {
         std::vector<Point> points = polys[i].GetPoints();
         for (int j = 0; j < points.size(); ++j)
         {
