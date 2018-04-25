@@ -29,13 +29,13 @@ std::vector<Polygon> Field::GetInnerPolygons()
     return inner_polygons;
 }
 
-Field Field::GenerateRandom()
+Field Field::GenerateRandom(int polyNumber)
 {
     Field result;
     double min_x = -2, min_y = -2, max_x = 2, max_y = 2;
     std::vector<bool> vacant(25, true);
     srand(time(NULL));
-    int number_of_polys = rand() % 10 + 1;
+    int number_of_polys = polyNumber % 26;
     for (int i = 0; i < number_of_polys; i++)
     {
         int number_of_cell = rand() % 25;

@@ -36,6 +36,10 @@ private slots:
 
     void on_inputRandom_clicked();
 
+    void on_polyNumber_valueChanged(int arg1);
+
+    void on_polyNumber_editingFinished();
+
 private:
     std::pair<double, double> start, finish;
     std::map<QString, QVector<QCPItemLine*>> taggedLines;

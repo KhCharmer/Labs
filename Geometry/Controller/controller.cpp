@@ -69,10 +69,10 @@ QVector<std::pair<Ui::Point, Ui::Point>>
 }
 
 QVector<QVector<std::pair<double, double>>>
-    Controller::getRandomField()
+    Controller::getRandomField(int polyNumber)
 {
     QVector<QVector<Ui::Point>> result;
-    Field field = Field::GenerateRandom();
+    Field field = Field::GenerateRandom(polyNumber);
     std::vector<Polygon> polys = field.GetInnerPolygons();
     for (int i = 0; i < polys.size(); i++)
     {

@@ -226,7 +226,7 @@ void PlotWindow::on_inputQuery_clicked()
 
 void PlotWindow::on_inputRandom_clicked()
 {
-    auto temp_polygons = Controller::getRandomField();
+    auto temp_polygons = Controller::getRandomField(ui->polyNumber->value());
     std::cerr << "! "<< temp_polygons.size() << " ! ";
     for (int i = 0; i < temp_polygons[0].size(); i++)
     {
@@ -238,4 +238,43 @@ void PlotWindow::on_inputRandom_clicked()
         this->polygons.push_back(poly);
     }
     ui->plot->replot();
+}
+
+void PlotWindow::on_polyNumber_valueChanged(int arg1)
+{
+    if (arg1 < 1)
+    {
+        ui->infoLabel->setText("Too small number of polygons");
+        ui->inputRandom->setEnabled(false);
+    }
+    else if (arg1 < 25)
+    {
+        ui->infoLabel->setText("Random generation is possible.");
+        ui->inputRandom->setEnabled(true);
+    }
+    else
+    {
+        ui->infoLabel->setText("Too many polygons!!!");
+        ui->inputRandom->setEnabled(false);
+    }
+}
+
+
+void PlotWindow::on_polyNumber_editingFinished()
+{
+    if (ui->polyNumber->value() < 1)
+    {
+        ui->infoLabel->setText("Too small number of polygons");
+        ui->inputRandom->setEnabled(false);
+    }
+    else if (ui->polyNumber->value() < 25)
+    {
+        ui->infoLabel->setText("Random generation is possible.");
+        ui->inputRandom->setEnabled(true);
+    }
+    else
+    {
+        ui->infoLabel->setText("Too many polygons!!!");
+        ui->inputRandom->setEnabled(false);
+    }
 }
