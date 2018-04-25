@@ -168,7 +168,7 @@ void PlotWindow::on_inputBegin_clicked()
 
 void PlotWindow::on_inputEnd_clicked()
 {
-    if (this->mode == Mode::Input)
+    if (this->mode == Mode::Input && Controller::PolygonIsOkay(this->buffer, this->polygons))
     {
         this->polygons.push_back(this->buffer);
         this->addPolygon(this->buffer);
@@ -178,6 +178,10 @@ void PlotWindow::on_inputEnd_clicked()
         this->mode = Mode::None;
         ui->infoLabel->setText("");
         ui->plot->replot();
+    }
+    else if (!Controller::PolygonIsOkay(this->buffer, this->polygons))
+    {
+        ui->infoLabel->setText("New polygon invalid (cross existed).");
     }
 }
 
@@ -225,4 +229,59 @@ void PlotWindow::on_inputFreeze_clicked()
 void PlotWindow::on_inputQuery_clicked()
 {
     this->mode = Mode::Start;
+}
+
+void PlotWindow::on_inputRandom_clicked()
+{
+    auto temp_polygons = Controller::getRandomField(ui->polyNumber->value());
+    std::cerr << "! "<< temp_polygons.size() << " ! ";
+    for (int i = 0; i < temp_polygons[0].size(); i++)
+    {
+        std::cerr << "x: " << temp_polygons[0][i].first << " y: " << temp_polygons[0][i].second << std::endl;
+    }
+    for (QVector<std::pair<double, double>> poly : temp_polygons)
+    {
+        this->addPolygon(poly);
+        this->polygons.push_back(poly);
+    }
+    ui->plot->replot();
+}
+
+void PlotWindow::on_polyNumber_valueChanged(int arg1)
+{
+    if (arg1 < 1)
+    {
+        ui->infoLabel->setText("Too small number of polygons");
+        ui->inputRandom->setEnabled(false);
+    }
+    else if (arg1 < 25)
+    {
+        ui->infoLabel->setText("Random generation is possible.");
+        ui->inputRandom->setEnabled(true);
+    }
+    else
+    {
+        ui->infoLabel->setText("Too many polygons!!!");
+        ui->inputRandom->setEnabled(false);
+    }
+}
+
+
+void PlotWindow::on_polyNumber_editingFinished()
+{
+    if (ui->polyNumber->value() < 1)
+    {
+        ui->infoLabel->setText("Too small number of polygons");
+        ui->inputRandom->setEnabled(false);
+    }
+    else if (ui->polyNumber->value() < 25)
+    {
+        ui->infoLabel->setText("Random generation is possible.");
+        ui->inputRandom->setEnabled(true);
+    }
+    else
+    {
+        ui->infoLabel->setText("Too many polygons!!!");
+        ui->inputRandom->setEnabled(false);
+    }
 }

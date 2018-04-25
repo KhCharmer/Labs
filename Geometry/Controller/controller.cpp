@@ -1,5 +1,6 @@
 #include "controller.h"
 #include "Geometry/polygon.h"
+#include "Geometry/field.h"
 #include "Geometry/visibilitygraph.h"
 #include "Geometry/shortestpath.h"
 
@@ -69,4 +70,29 @@ QVector<std::pair<Ui::Point, Ui::Point>>
     auto path = shortestPath(model, start, finish);
     vg = temp;
     return QVector<std::pair<Ui::Point, Ui::Point>>::fromStdVector(path);
+}
+
+QVector<QVector<std::pair<double, double>>>
+    Controller::getRandomField(int polyNumber)
+{
+    QVector<QVector<Ui::Point>> result;
+    Field field = Field::GenerateRandom(polyNumber);
+    std::vector<Polygon> polys = field.GetInnerPolygons();
+    for (int i = 0; i < polys.size(); i++)
+    {
+        result.push_back(QVector<Ui::Point>::fromStdVector(polys[i].GetPoints()));
+    }
+    return result;
+}
+
+bool Controller::PolygonIsOkay(QVector<std::pair<double, double>> new_polygon ,QVector<QVector<std::pair<double, double>>> & other_polygons)
+{
+    Polygon polygon(new_polygon.toStdVector());
+    std::vector<Polygon> polygons;
+    for (auto p : other_polygons)
+    {
+        Polygon temp(p.toStdVector());
+        polygons.push_back(temp);
+    }
+    return Polygon::IsPossibleToAdd(polygon, polygons);
 }
