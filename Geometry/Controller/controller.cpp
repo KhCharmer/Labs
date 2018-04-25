@@ -4,6 +4,8 @@
 #include "Geometry/shortestpath.h"
 
 VisibilityGraph Controller::vg;
+Ui::Point Controller::_start;
+Ui::Point Controller::_finish;
 
 Polygon Controller::uiPolyToModel(const QVector<std::pair<double, double>> &uiPoly)
 {
@@ -45,6 +47,8 @@ QVector<std::pair<Ui::Point, Ui::Point>>
                                  , Ui::Point start, Ui::Point finish
                                  , QVector<std::pair<Ui::Point, Ui::Point>> &additionalVg)
 {
+    _start = start;
+    _finish = finish;
     // transforming data input from View to Model representation
     std::vector<std::pair<Point, Point>> model;
     for (auto const &polygon: polygons)
@@ -55,12 +59,12 @@ QVector<std::pair<Ui::Point, Ui::Point>>
     // TODO: workaround, fix it!
     VisibilityGraph temp = vg;
 
-    auto newVgEdges = QVector<std::pair<Ui::Point, Ui::Point>>::fromStdVector(temp.addPoint(start, -1));
+    auto newVgEdges = QVector<std::pair<Ui::Point, Ui::Point>>::fromStdVector(vg.addPoint(start, -1));
     additionalVg += newVgEdges;
-    newVgEdges = QVector<std::pair<Ui::Point, Ui::Point>>::fromStdVector(temp.addPoint(finish, -1));
+    newVgEdges = QVector<std::pair<Ui::Point, Ui::Point>>::fromStdVector(vg.addPoint(finish, -1));
     additionalVg += newVgEdges;
 
-    auto vec = temp.getEdges();
+    auto vec = vg.getEdges();
     model.insert(model.end(), vec.begin(), vec.end());
     auto path = shortestPath(model, start, finish);
     vg = temp;

@@ -57,13 +57,14 @@ std::vector<std::pair<Point, Point>>
     std::priority_queue<std::pair<double, int>> q;
     q.push (std::make_pair (0, s));
     while (!q.empty()) {
-        int v = q.top().second,  cur_d = -q.top().first;
+        int v = q.top().second;
+        double cur_d = -q.top().first;
         q.pop();
         if (cur_d > d[v])  continue;
 
         for (size_t j=0; j < g[v].size(); ++j) {
-            int to = g[v][j].first,
-                len = g[v][j].second;
+            int to = g[v][j].first;
+            double len = g[v][j].second;
             if (d[v] + len < d[to]) {
                 d[to] = d[v] + len;
                 p[to] = v;

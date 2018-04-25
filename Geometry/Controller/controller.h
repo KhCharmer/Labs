@@ -13,6 +13,7 @@ namespace Ui
 class Controller {
 private:
     static VisibilityGraph vg;
+    static Ui::Point _start, _finish;
     static Polygon
         uiPolyToModel(const QVector<std::pair<double, double>> &uiPoly);
     static QVector<std::pair<Ui::Point, Ui::Point>>

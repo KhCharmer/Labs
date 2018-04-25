@@ -61,6 +61,8 @@ void PlotWindow::showTaggedLines(QString tag, bool show)
 
 void PlotWindow::removeLinesByTag(QString tag)
 {
+    if (this->taggedLines.find(tag) == this->taggedLines.end())
+        return;
     auto &lines = this->taggedLines[tag];
     for (int i = 0; i < lines.size(); ++i)
         delete lines[i];
@@ -99,7 +101,7 @@ void PlotWindow::addPolygon(const QVector<std::pair<double, double>> &poly)
         this->addLine(x1, y1, x2, y2, "polygon");
     }
     points->addData(poly[n - 1].first, poly[n - 1].second);
-    this->addLine(poly[n - 1].first, poly[n - 1].second, poly[0].first, poly[0].second, "polygon_last");
+    this->addLine(poly[n - 1].first, poly[n - 1].second, poly[0].first, poly[0].second, "polygon");
 }
 
 void PlotWindow::on_plotInput_clicked(QMouseEvent *event)
@@ -114,6 +116,7 @@ void PlotWindow::on_plotInput_clicked(QMouseEvent *event)
     {
         query->data()->clear();
         removeLinesByTag("shortest path");
+        removeLinesByTag("query-visibility graph");
         this->start = p;
         query->addData(x, y);
         this->ui->inputQuery->setEnabled(false);
@@ -125,15 +128,13 @@ void PlotWindow::on_plotInput_clicked(QMouseEvent *event)
         this->finish = p;
         query->addData(x, y);
         this->ui->inputQuery->setEnabled(true);
-        QVector<std::pair<Ui::Point, Ui::Point>> additionalVg;
+        additionalVg.clear();
         this->path = Controller::calcShortestPath(this->polygons, this->start, this->finish, additionalVg);
-
         for (const auto &edge: additionalVg)
         {
             Ui::Point p1 = edge.first, p2 = edge.second;
-            this->addLine(p1.first, p1.second, p2.first, p2.second, "visibility graph", false, Qt::blue);
+            this->addLine(p1.first, p1.second, p2.first, p2.second, "query-visibility graph", false, Qt::blue);
         }
-
         for (const auto &edge: this->path)
         {
             Ui::Point p1 = edge.first, p2 = edge.second;
@@ -203,6 +204,8 @@ void PlotWindow::on_inputClear_clicked()
 
     this->ui->inputFreeze->setEnabled(true);
     this->ui->inputQuery->setEnabled(false);
+
+    query->data()->clear();
 
     this->ui->plot->replot();
 }

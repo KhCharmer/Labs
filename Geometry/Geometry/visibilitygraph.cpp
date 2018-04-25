@@ -4,11 +4,12 @@ void VisibilityGraph::addPoly(const Polygon &poly)
 {
     std::vector<Point> temp_points = poly.GetPoints();
     size_t n = temp_points.size();
+    std::vector<std::pair<Point, Point>> newEdges;
     for (int j = 0; j < n - 1; j++)
-    {
-        poly_edges.push_back({temp_points[j], temp_points[j + 1]});
-    }
-    poly_edges.push_back({temp_points[n - 1], temp_points[0]});
+        newEdges.push_back({temp_points[j], temp_points[j + 1]});
+    newEdges.push_back({temp_points[n - 1], temp_points[0]});
+    edges.insert(edges.end(), newEdges.begin(), newEdges.end());
+    poly_edges.insert(poly_edges.end(), newEdges.begin(), newEdges.end());
 }
 
 VisibilityGraph::VisibilityGraph()
@@ -52,6 +53,18 @@ std::vector<std::pair<Point, Point>> VisibilityGraph::addPoint(Point p, int id=-
     all_points.push_back({p, id});
     edges.insert(edges.end(), newEdges.begin(), newEdges.end());
     return newEdges;
+}
+
+std::vector<std::pair<Point, Point>> VisibilityGraph::removePoint(Point p)
+{
+    std::vector<std::pair<Point, Point>> removedEdges;
+    for (int i = 0; i < edges.size(); ++i)
+        if (edges[i].first == p || edges[i].second == p)
+        {
+            removedEdges.push_back(edges[i]);
+            edges.erase(edges.begin() + i);
+        }
+    return removedEdges;
 }
 
 void VisibilityGraph::PrintEdges()

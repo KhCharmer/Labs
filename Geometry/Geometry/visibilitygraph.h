@@ -20,6 +20,7 @@ public:
     std::vector<std::pair<Point, Point>> getEdges();
     void PrintEdges();
     std::vector<std::pair<Point, Point>> addPoint(Point, int);
+    std::vector<std::pair<Point, Point>> removePoint(Point);
 };
 
 #endif // VISIBILITYGRAPH_H

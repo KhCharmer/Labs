@@ -36,11 +36,11 @@ private slots:
 private:
     std::pair<double, double> start, finish;
     std::map<QString, QVector<QCPItemLine*>> taggedLines;
+    QVector<QCPItemLine*> queryLines;
     std::map<QString, bool> taggedState;
     Ui::PlotWindow *ui;
     QCPGraph *points, *query;
-    QVector<std::pair<Ui::Point, Ui::Point>> vg;
-    QVector<std::pair<Ui::Point, Ui::Point>> path;
+    QVector<std::pair<Ui::Point, Ui::Point>> vg, additionalVg, path;
     QVector<QVector<std::pair<double, double>>> polygons;
     QVector<std::pair<double, double>> buffer;
     enum class Mode { None, Input, Start, Finish } mode;
