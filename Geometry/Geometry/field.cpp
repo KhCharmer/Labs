@@ -32,21 +32,21 @@ std::vector<Polygon> Field::GetInnerPolygons()
 Field Field::GenerateRandom(int polyNumber)
 {
     Field result;
-    double min_x = -2, min_y = -2, max_x = 2, max_y = 2;
-    std::vector<bool> vacant(25, true);
+    double min_x = -10, min_y = -10, max_x = 10, max_y = 10;
+    std::vector<bool> vacant(100, true);
     srand(time(NULL));
-    int number_of_polys = polyNumber % 26;
+    int number_of_polys = polyNumber % 101;
     for (int i = 0; i < number_of_polys; i++)
     {
-        int number_of_cell = rand() % 25;
+        int number_of_cell = rand() % 100;
         while (!vacant[number_of_cell])
-            number_of_cell = (number_of_cell + 1) % 25;
+            number_of_cell = (number_of_cell + 1) % 100;
         vacant[number_of_cell] = false;
         int number_of_vertices = rand() % 4 + 3;
-        double min_poly_x = min_x + ((max_x - min_x) / 5) * (number_of_cell / 5);
-        double max_poly_x = min_poly_x + ((max_x - min_x) / 5);
-        double min_poly_y = min_y + ((max_y - min_y) / 5) * (number_of_cell % 5);
-        double max_poly_y = min_poly_y + ((max_y - min_y) / 5);
+        double min_poly_x = min_x + ((max_x - min_x) / 10) * (number_of_cell / 10);
+        double max_poly_x = min_poly_x + ((max_x - min_x) / 10);
+        double min_poly_y = min_y + ((max_y - min_y) / 10) * (number_of_cell % 10);
+        double max_poly_y = min_poly_y + ((max_y - min_y) / 10);
         result.AddPoly(Polygon::GenerateRandom(number_of_vertices, min_poly_x, max_poly_x, min_poly_y, max_poly_y));
     }
     return result;

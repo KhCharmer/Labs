@@ -13,10 +13,10 @@ PlotWindow::PlotWindow(QWidget *parent) :
     ui->setupUi(this);
     mode = Mode::None;
 
-    double PLOT_X_BEG = -2;
-    double PLOT_X_END = 2;
-    double PLOT_Y_BEG = 2;
-    double PLOT_Y_END = -2;
+    double PLOT_X_BEG = -10;
+    double PLOT_X_END = 10;
+    double PLOT_Y_BEG = 10;
+    double PLOT_Y_END = -10;
 
     ui->plot->addGraph();
     ui->plot->xAxis->setRange(PLOT_X_BEG, PLOT_X_END);
@@ -254,14 +254,14 @@ void PlotWindow::on_polyNumber_valueChanged(int arg1)
         ui->infoLabel->setText("Too small number of polygons");
         ui->inputRandom->setEnabled(false);
     }
-    else if (arg1 < 25)
+    else if (arg1 < 101)
     {
-        ui->infoLabel->setText("Random generation is possible.");
+        ui->infoLabel->setText("Random generation is possible");
         ui->inputRandom->setEnabled(true);
     }
     else
     {
-        ui->infoLabel->setText("Too many polygons!!!");
+        ui->infoLabel->setText("Too many polygons!");
         ui->inputRandom->setEnabled(false);
     }
 }
@@ -274,14 +274,14 @@ void PlotWindow::on_polyNumber_editingFinished()
         ui->infoLabel->setText("Too small number of polygons");
         ui->inputRandom->setEnabled(false);
     }
-    else if (ui->polyNumber->value() < 25)
+    else if (ui->polyNumber->value() < 101)
     {
-        ui->infoLabel->setText("Random generation is possible.");
+        ui->infoLabel->setText("Random generation is possible");
         ui->inputRandom->setEnabled(true);
     }
     else
     {
-        ui->infoLabel->setText("Too many polygons!!!");
+        ui->infoLabel->setText("Too many polygons!");
         ui->inputRandom->setEnabled(false);
     }
 }
